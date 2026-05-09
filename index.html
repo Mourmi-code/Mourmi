@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bible Mourmiverse</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#home" aria-label="Retour à l'accueil Bible Mourmiverse">
+        <span class="brand-mark">M</span>
+        <span>
+          <strong>Bible Mourmiverse</strong>
+          <small>Clairval · personnages canon</small>
+        </span>
+      </a>
+      <nav aria-label="Navigation principale">
+        <a href="#home">Accueil</a>
+        <a href="#characters">Personnages</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="home" class="hero-shell" aria-labelledby="home-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Bible d’univers créatif</p>
+          <h1 id="home-title">Bienvenue dans le Mourmiverse</h1>
+          <p>
+            Une interface locale pour explorer Clairval, ses habitants, ses alliés,
+            ses antagonistes et toute la matière canon utile aux récits et aux visuels.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-link" href="#characters">Explorer les personnages</a>
+            <span class="soft-note">Prompts visuels · fiches canon · recherche rapide</span>
+          </div>
+        </div>
+        <div class="hero-card" aria-label="Ambiance Clairval">
+          <div class="hero-sun"></div>
+          <div class="hero-house"></div>
+          <h2>Clairval</h2>
+          <p>Crème, bleu Mourmi, brun chaud et vert doux pour une bible claire, cartoon et chaleureuse.</p>
+        </div>
+      </section>
+
+      <section id="characters" class="panel directory-panel" aria-labelledby="characters-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Répertoire canon</p>
+            <h2 id="characters-title">Personnages</h2>
+          </div>
+          <p>Filtre, cherche, sélectionne une fiche, puis génère un prompt visuel complet.</p>
+        </div>
+        <div class="controls">
+          <label class="search-box" for="searchInput">
+            <span>Recherche</span>
+            <input id="searchInput" type="text" placeholder="Rechercher par nom..." />
+          </label>
+          <div id="filters" class="filters" aria-label="Filtres par catégorie"></div>
+        </div>
+        <div class="layout">
+          <aside class="sidebar" aria-label="Liste des personnages">
+            <ul id="characterList" class="character-list"></ul>
+          </aside>
+          <article id="characterDetail" class="detail-card"></article>
+        </div>
+      </section>
+    </main>
+
+    <script src="data/characters.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
