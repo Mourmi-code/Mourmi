@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bible Mourmiverse</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Bible Mourmiverse</h1>
+      <nav>
+        <a href="#home">Accueil</a>
+        <a href="#characters">Personnages</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="home" class="panel hero">
+        <h2>Bienvenue dans le Mourmiverse</h2>
+        <p>Explore la bible des personnages : apparence canon, personnalité, relations, voix/ton et mots-clés visuels.</p>
+      </section>
+
+      <section id="characters" class="panel">
+        <h2>Liste des personnages</h2>
+        <div class="controls">
+          <input id="searchInput" type="text" placeholder="Rechercher par nom..." />
+          <div id="filters" class="filters"></div>
+        </div>
+        <div class="layout">
+          <aside>
+            <ul id="characterList" class="character-list"></ul>
+          </aside>
+          <article id="characterDetail" class="detail-card"></article>
+        </div>
+      </section>
+    </main>
+
+    <script src="data/characters.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
