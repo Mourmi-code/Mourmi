@@ -9,6 +9,14 @@ const detailEl = document.getElementById("characterDetail");
 const searchEl = document.getElementById("searchInput");
 const filtersEl = document.getElementById("filters");
 
+function listItems(items) {
+  return `<ul class="detail-list">${(items || []).map((item) => `<li>${item}</li>`).join("")}</ul>`;
+}
+
+function fieldLine(label, value) {
+  return value ? `<div class="identity-line"><strong>${label} :</strong> ${value}</div>` : "";
+}
+
 function filteredCharacters() {
   const q = searchEl.value.trim().toLowerCase();
   return characters.filter(
@@ -40,9 +48,11 @@ function renderList() {
   visible.forEach((c) => {
     const li = document.createElement("li");
     const b = document.createElement("button");
+    if (c.id === selectedId) b.className = "selected";
     b.innerHTML = `<strong>${c.nom}</strong><br><small>${c.identite.rolePrincipal}</small>`;
     b.onclick = () => {
       selectedId = c.id;
+      renderList();
       renderDetail();
     };
     li.appendChild(b);
@@ -55,14 +65,17 @@ function buildPrompt(c) {
   return [
     `Portrait cartoon chaleureux dans l'univers Mourmiverse de ${c.nom}.`,
     `Identité: ${c.identite.espece}, ${c.identite.ageCanon}, ${c.identite.rolePrincipal}.`,
+    `Fonction narrative: ${c.fonctionNarrative}`,
     `Apparence canon: ${c.apparenceCanon}`,
     `Tenue canon: ${c.tenueCanon}`,
     `Personnalité visible: ${c.personnalite}`,
-    `Relations clés: ${c.relations}`,
+    `Forces à suggérer visuellement: ${(c.forces || []).join(", ")}`,
+    `Failles à suggérer subtilement: ${(c.failles || []).join(", ")}`,
+    `Relations principales: ${(c.relationsPrincipales || []).join(" | ")}`,
     `Voix/ton suggéré visuellement: ${c.voixTon}`,
     `Mots-clés visuels: ${c.motsClesVisuels.join(", ")}`,
     `Mots-clés émotionnels: ${c.motsClesEmotionnels.join(", ")}`,
-    `Citation canon: "${c.phraseCanon}"`,
+    `Phrase canon / résumé: "${c.phraseCanon}"`,
     "Style: clair, moderne, cartoon, chaleureux, lumières douces, ambiance Clairval, quotidien + merveilleux."
   ].join("\n");
 }
@@ -77,18 +90,33 @@ function renderDetail() {
   detailEl.innerHTML = `
     <h3>${c.nom}</h3>
     <div class="chips">${c.categories.map((cat) => `<span class="chip">${cat}</span>`).join("")}</div>
-    <div class="detail-section"><strong>Identité :</strong> ${c.identite.espece}, ${c.identite.ageCanon} · ${c.identite.statut}</div>
-    <div class="detail-section"><strong>Lieux :</strong> vie (${c.identite.lieuVie}) · travail (${c.identite.lieuTravail}) · lieu-clé (${c.identite.lieuCle})</div>
-    <div class="detail-section"><strong>Fonction narrative :</strong> ${c.fonctionNarrative}</div>
-    <div class="detail-section"><strong>Apparence canon :</strong> ${c.apparenceCanon}</div>
-    <div class="detail-section"><strong>Tenue canon :</strong> ${c.tenueCanon}</div>
-    <div class="detail-section"><strong>Personnalité :</strong> ${c.personnalite}</div>
-    <div class="detail-section"><strong>Forces :</strong> ${(c.forces || []).join(", ")}</div>
-    <div class="detail-section"><strong>Failles :</strong> ${(c.failles || []).join(", ")}</div>
-    <div class="detail-section"><strong>Relations :</strong> ${c.relations}</div>
-    <div class="detail-section"><strong>Voix / ton :</strong> ${c.voixTon}</div>
-    <div class="detail-section"><strong>Mots-clés visuels :</strong> ${c.motsClesVisuels.join(", ")}</div>
-    <div class="detail-section"><strong>Citation canon :</strong> “${c.phraseCanon}”</div>
+
+    <section class="detail-section">
+      <h4>Identité</h4>
+      <div class="identity-grid">
+        ${fieldLine("Nom complet", c.identite.nomComplet)}
+        ${fieldLine("Espèce", c.identite.espece)}
+        ${fieldLine("Âge canon", c.identite.ageCanon)}
+        ${fieldLine("Rôle principal", c.identite.rolePrincipal)}
+        ${fieldLine("Statut", c.identite.statut)}
+        ${fieldLine("Lieu de vie", c.identite.lieuVie)}
+        ${fieldLine("Lieu de travail", c.identite.lieuTravail)}
+        ${fieldLine("Lieu-clé", c.identite.lieuCle)}
+      </div>
+    </section>
+
+    <section class="detail-section"><h4>Fonction narrative</h4><p>${c.fonctionNarrative}</p></section>
+    <section class="detail-section"><h4>Apparence canon</h4><p>${c.apparenceCanon}</p></section>
+    <section class="detail-section"><h4>Tenue canon</h4><p>${c.tenueCanon}</p></section>
+    <section class="detail-section"><h4>Personnalité</h4><p>${c.personnalite}</p></section>
+    <section class="detail-section"><h4>Forces</h4>${listItems(c.forces)}</section>
+    <section class="detail-section"><h4>Failles</h4>${listItems(c.failles)}</section>
+    <section class="detail-section"><h4>Relations principales</h4>${listItems(c.relationsPrincipales)}<p>${c.relations}</p></section>
+    <section class="detail-section"><h4>Voix / ton</h4><p>${c.voixTon}</p></section>
+    <section class="detail-section"><h4>Mots-clés visuels</h4><div class="chips">${c.motsClesVisuels.map((tag) => `<span class="chip">${tag}</span>`).join("")}</div></section>
+    <section class="detail-section"><h4>Mots-clés émotionnels</h4><div class="chips emotional">${c.motsClesEmotionnels.map((tag) => `<span class="chip">${tag}</span>`).join("")}</div></section>
+    <section class="detail-section quote"><h4>Phrase canon / phrase-résumé</h4><p>“${c.phraseCanon}”</p></section>
+
     <button id="promptBtn" class="prompt-btn">Générer le prompt visuel</button>
     <pre id="promptOutput" class="prompt-output" hidden></pre>
   `;
